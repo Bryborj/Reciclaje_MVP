@@ -2,13 +2,20 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY;
+const AUTH_DOMAIN = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
+const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID;
+const STORAGE_BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
+const MESSAGING_SENDER_ID = import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
+const APP_ID = import.meta.env.VITE_FIREBASE_APP_ID;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDeVeAR41_ehhzzJNoOydo4U-GWJo5JPhY",
-  authDomain: "reciclaje-mvp.firebaseapp.com",
-  projectId: "reciclaje-mvp",
-  storageBucket: "reciclaje-mvp.firebasestorage.app",
-  messagingSenderId: "1063513276796",
-  appId: "1:1063513276796:web:a50aa1dfe294a4345ba4f9"
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGING_SENDER_ID,
+  appId: APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
