@@ -75,13 +75,13 @@ function Map() {
       <div className="absolute top-4 left-4 z-[9999]">
         <Link
           to="/dashboard"
-          className="bg-white px-4 py-2 rounded-lg shadow-md font-bold text-gray-700 hover:text-green-600 transition"
+          className="bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md font-bold text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition"
         >
           ← Volver al Panel
         </Link>
       </div>
 
-      <div className="absolute top-4 right-4 z-[9999] bg-white p-3 rounded-lg shadow-md space-y-2 text-sm">
+      <div className="absolute top-4 right-4 z-[9999] bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md space-y-2 text-sm text-gray-800 dark:text-gray-200">
         <div className="flex items-center gap-2">
           <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png" className="w-4 h-6" />
           <span>Materiales (Usuarios)</span>
@@ -96,16 +96,44 @@ function Map() {
         center={[18.90686, -97.63050]}
         zoom={11}
         className="h-full w-full"
+      /* 
+         Simple Dark Mode hack for OSM Tiles:
+         invert colors and rotate hue to bring some colors back to normal-ish.
+         Note: This inverts everything including markers, so we might need to be careful.
+         Ideally, we use a different TileLayer for dark mode, but for MVP this css filter on the tile pane is a common trick.
+         However, applying it to MapContainer applies it to everything.
+         Better approach: Apply unique class to TileLayer.
+         But React-Leaflet doesn't pass className easily to the img tiles without custom panes.
+         Let's try a CSS based solution targeting `.leaflet-tile-pane` in global css or module.
+         
+         For simplicity in inline styles, we can stick to this or just accept light map.
+         Let's try to pass className to TileLayer if supported or wrap it.
+         Actually, the "dark" class on the parent div can be used to style `.leaflet-layer` via CSS.
+      */
       >
         <TileLayer
           attribution="© OpenStreetMap"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          className="map-tiles"
         />
+
+        {/* ... Markers ... */}
+        {/* Note: If we invert the whole map, markers look bad. 
+            We should only invert the tiles. 
+            The easy way is adding a <style> block or using Global CSS.
+            Let's add a style tag here for the MVP "dark map" effect.
+        */}
+        <style>{`
+            .dark .map-tiles {
+                filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+            }
+        `}</style>
+
 
         {/* Render Centers */}
         {centros.map((centro) => (
           <Marker key={`center-${centro.id}`} position={[centro.lat, centro.lng]} icon={centerIcon}>
-            <Popup>
+            <Popup className="custom-popup">
               <div className="font-sans">
                 <h3 className="font-bold text-blue-800">{centro.nombre}</h3>
                 <p className="text-xs text-gray-500 mb-2">Centro de Acopio Verificado</p>
@@ -125,13 +153,13 @@ function Map() {
         {/* Render Materials */}
         {materials.map((m) => (
           <Marker key={`mat-${m.id}`} position={[m.location.lat, m.location.lng]} icon={materialIcon}>
-            <Popup>
+            <Popup className="custom-popup">
               <div className="font-sans min-w-[200px]">
                 {m.imageUrl && (
                   <img src={m.imageUrl} alt={m.type} className="w-full h-24 object-cover rounded mb-2" />
                 )}
                 <h3 className="font-bold text-green-700 capitalize">{m.type}</h3>
-                <p className="text-sm font-medium">{m.quantity}</p>
+                <p className="text-sm font-medium text-gray-800">{m.quantity}</p>
                 <p className="text-xs text-gray-600 mt-1">{m.description}</p>
                 <p className="text-xs text-gray-400 mt-2">Publicado el {new Date(m.createdAt?.seconds * 1000).toLocaleDateString()}</p>
 
@@ -183,7 +211,8 @@ function Map() {
                           participantsData: participantData,
                           lastMessage: `Hola, vi tu ubicación de: ${m.type}`,
                           lastMessageTime: serverTimestamp(),
-                          createdAt: serverTimestamp()
+                          createdAt: serverTimestamp(),
+                          lastSenderId: user.uid
                         });
 
                         await addDoc(collection(db, "chats", chatId, "messages"), {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useNavigate, Link } from "react-router-dom";
+import ThemeToggle from "../components/ThemeToggle";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -32,14 +33,20 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow w-80"
+        className="bg-white dark:bg-gray-800 p-6 rounded shadow w-80 transition-colors"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">
-          Iniciar sesión
-        </h2>
+        <div className="flex flex-col items-center mb-6">
+          <img src="/icon_recyclo.jpeg" alt="Logo Reciclaje" className="w-24 h-24 rounded-full object-cover mb-4 shadow-md" />
+          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
+            Iniciar sesión
+          </h2>
+        </div>
 
         {error && (
           <p className="text-red-500 text-sm mb-2">{error}</p>
@@ -48,7 +55,7 @@ function Login() {
         <input
           type="email"
           placeholder="Correo"
-          className="w-full mb-3 p-2 border rounded"
+          className="w-full mb-3 p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -57,7 +64,7 @@ function Login() {
         <input
           type="password"
           placeholder="Contraseña"
-          className="w-full mb-3 p-2 border rounded"
+          className="w-full mb-3 p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required

@@ -110,72 +110,69 @@ export default function PublishMaterial() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4 flex items-center justify-center">
-            <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-8">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800">Publicar Material</h2>
-                    <Link to="/dashboard" className="text-gray-500 hover:text-gray-700">✕</Link>
-                </div>
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-4 pb-20">
+            {/* Header */}
+            <div className="flex items-center gap-4 mb-6">
+                <Link to="/dashboard" className="p-2 bg-white dark:bg-slate-800 rounded-full shadow text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 transition">
+                    ←
+                </Link>
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Publicar Material</h1>
+            </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    {/* Type Selection */}
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 max-w-lg mx-auto">
+                <form onSubmit={handleSubmit} className="space-y-6">
+
+                    {/* Material Type */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Material</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo de Material</label>
                         <select
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
                             value={materialType}
                             onChange={(e) => setMaterialType(e.target.value)}
+                            className="w-full p-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg outline-none focus:ring-2 focus:ring-green-500 text-gray-800 dark:text-white"
                         >
                             <option value="plastic">Plástico</option>
+                            <option value="cardboard">Cartón</option>
                             <option value="glass">Vidrio</option>
-                            <option value="cardboard">Cartón / Papel</option>
                             <option value="metal">Metal</option>
+                            <option value="paper">Papel</option>
                             <option value="electronics">Electrónicos</option>
-                            <option value="other">Otro</option>
                         </select>
                     </div>
 
                     {/* Quantity */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad Aproximada</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cantidad Aproximada</label>
                         <input
                             type="text"
-                            placeholder="Ej: 2 bolsas grandes, 5kg..."
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
                             value={quantity}
                             onChange={(e) => setQuantity(e.target.value)}
+                            placeholder="Ej: 2 bolsas grandes, 5kg"
+                            className="w-full p-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg outline-none focus:ring-2 focus:ring-green-500 text-gray-800 dark:text-white"
                             required
                         />
                     </div>
 
                     {/* Description */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Descripción / Detalles</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Descripción</label>
                         <textarea
-                            rows="3"
-                            placeholder="Detalles adicionales para el recolector..."
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Detalles adicionales (opcional)..."
+                            className="w-full p-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg outline-none focus:ring-2 focus:ring-green-500 h-24 resize-none text-gray-800 dark:text-white"
                         />
                     </div>
 
-                    {/* Image Upload */}
+                    {/* File Upload */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Foto del Material</label>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition cursor-pointer relative">
-                            <input
-                                type="file"
-                                accept="image/*"
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                onChange={(e) => setFile(e.target.files[0])}
-                            />
-                            {file ? (
-                                <p className="text-green-600 font-medium">{file.name}</p>
-                            ) : (
-                                <p className="text-gray-500 text-sm">Toca para subir una foto</p>
-                            )}
-                        </div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Foto del Material</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setFile(e.target.files[0])}
+                            className="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 dark:file:bg-slate-700 dark:file:text-green-400"
+                            required
+                        />
                     </div>
 
                     {/* Location Status */}
@@ -185,7 +182,7 @@ export default function PublishMaterial() {
                         ) : location ? (
                             <span className="text-green-600">✅ Ubicación detectada</span>
                         ) : (
-                            <button type="button" onClick={getLocation} className="text-blue-600 underline">
+                            <button type="button" onClick={getLocation} className="text-blue-600 dark:text-blue-400 underline">
                                 Reintentar obtener ubicación
                             </button>
                         )}

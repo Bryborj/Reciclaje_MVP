@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ChatList from "./pages/ChatList";
 import Chat from "./pages/Chat";
 import NotificationToast from "./components/NotificationToast";
+import { ThemeProvider } from "./context/ThemeContext";
 import { auth, db } from "./firebase/config";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 
@@ -60,61 +61,65 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      {notification && (
-        <NotificationToast
-          message={notification}
-          onClose={() => setNotification(null)}
-        />
-      )}
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <ThemeProvider>
+      <BrowserRouter>
+        {notification && (
+          <NotificationToast
+            message={notification}
+            onClose={() => setNotification(null)}
+          />
+        )}
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-        <Route
-          path="/mapa"
-          element={
-            <ProtectedRoute>
-              <Map />
-            </ProtectedRoute>
-          } />
-        <Route
-          path="/publicar"
-          element={
-            <ProtectedRoute>
-              <PublishMaterial />
-            </ProtectedRoute>
-          }
-        />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/mapa"
+              element={
+                <ProtectedRoute>
+                  <Map />
+                </ProtectedRoute>
+              } />
+            <Route
+              path="/publicar"
+              element={
+                <ProtectedRoute>
+                  <PublishMaterial />
+                </ProtectedRoute>
+              }
+            />
 
-        <Route path="/materiales" element={<Materials />} />
+            <Route path="/materials" element={<Materials />} />
 
-        <Route
-          path="/chats"
-          element={
-            <ProtectedRoute>
-              <ChatList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/chat/:chatId"
-          element={
-            <ProtectedRoute>
-              <Chat />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+            <Route
+              path="/chats"
+              element={
+                <ProtectedRoute>
+                  <ChatList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/chat/:chatId"
+              element={
+                <ProtectedRoute>
+                  <Chat />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

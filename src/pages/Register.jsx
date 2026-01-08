@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
+import ThemeToggle from "../components/ThemeToggle";
 
 function Register() {
   const [nombre, setNombre] = useState("");
@@ -39,14 +40,20 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow w-80"
+        className="bg-white dark:bg-gray-800 p-6 rounded shadow w-80 transition-colors"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">
-          Registro
-        </h2>
+        <div className="flex flex-col items-center mb-6">
+          <img src="/icon_recyclo.jpeg" alt="Logo Reciclaje" className="w-24 h-24 rounded-full object-cover mb-4 shadow-md" />
+          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
+            Registro
+          </h2>
+        </div>
 
         {error && (
           <p className="text-red-500 text-sm mb-2">{error}</p>
